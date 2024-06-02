@@ -1,3 +1,9 @@
 Recognition text on video
 
+Plan:
+1. Read frames from video
+2. Preproc frames to lower resolution, change size and etc.
+3. Recognize text from frames
+4. Deduplicate text, proc, (optional check errors, try to fix them)
+5. Save result
 
