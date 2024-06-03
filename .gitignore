@@ -2,3 +2,4 @@
 videos
 .venv
 *.swp
+.DS_Store
