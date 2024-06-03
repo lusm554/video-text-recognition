@@ -1,5 +1,4 @@
 from PIL import Image
-import pytesseract
 import cv2
 import numpy as np
 import os
@@ -32,22 +31,40 @@ def preproc2(image):
   binary_image = cv2.medianBlur(binary_image, 3)
   return binary_image
 
-def search_text(image):
+def search_text_tesseract_ocr(image):
+  import pytesseract
   #image = Image.open(img_filepath)
   image = Image.fromarray(image)
   text = pytesseract.image_to_string(image, lang='rus')
   return text
 
+def search_text_easyocr(image):
+  import easyocr
+  import matplotlib.pyplot as plt
+  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  '''
+  plt.imshow(gray, cmap='gray')
+  plt.title('Gray Image')
+  plt.show()
+  '''
+  reader = easyocr.Reader(['ru', 'en'])
+  results = reader.readtext(gray)
+  for (bbox, text, prob) in results:
+    print(f'Text: {text}, Probability: {prob:.4f}')
+  return ''
+
 def image_to_text(img_filepath):
   image = read_image(img_filepath)
-  #image = preproc(image)
-  image = preproc2(image)
-  print('proc_' + img_filepath)
+  image = preproc(image)
+  #image = preproc2(image)
+  '''
   from pathlib import Path
   p = Path(img_filepath)
   p = os.path.join(p.parent,'proc_' + p.name)
   cv2.imwrite(p, image)
-  txt = search_text(image)
+  '''
+  #txt = search_text_tesseract_ocr(image)
+  txt = search_text_easyocr(image)
   return txt
 
 if __name__ == '__main__':
