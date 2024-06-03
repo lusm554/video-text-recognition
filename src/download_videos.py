@@ -26,7 +26,7 @@ def main():
   print(f'{dest_dir=}')
   links_reader = video_links_reader(src_filepath)
   for n, row in enumerate(links_reader):
-    if n == 10:
+    if n == 100:
       break
     video_url_src = row['link']
     _video_file = video_url_src.replace('https://cdn-st.rutubelist.ru/media', '').replace('/', '_').strip('_')
