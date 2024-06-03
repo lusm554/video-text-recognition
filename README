@@ -7,3 +7,15 @@ Plan:
 4. Deduplicate text, proc, (optional check errors, try to fix them)
 5. Save result
 
+Requirements:
+  Python on unix system:
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+  System:
+    MacOs:
+      brew install tesseract
+      brew install tesseract-lang
+    Linux:
+      sudo apt-get install tesseract-ocr
+
