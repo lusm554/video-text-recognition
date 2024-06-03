@@ -51,6 +51,15 @@ def search_text_easyocr(image):
     print(f'Text: {text}, Probability: {prob:.4f}')
   return ''
 
+def search_text_paddle_ocr(image):
+  from paddleocr import PaddleOCR, draw_ocr
+  ocr = PaddleOCR(use_angle_cls=True, lang='ru')
+  result = ocr.ocr(image, cls=True)
+  for line in result:
+    for bbox, (text, prob) in line:
+      print(f'Text: {text}, Probability: {prob:.4f}')
+  return ''
+
 def image_to_text(img_filepath):
   image = read_image(img_filepath)
   #image = preproc(image)
@@ -62,7 +71,8 @@ def image_to_text(img_filepath):
   cv2.imwrite(p, image)
   '''
   #txt = search_text_tesseract_ocr(image)
-  txt = search_text_easyocr(image)
+  #txt = search_text_easyocr(image)
+  txt = search_text_paddle_ocr(image)
   return txt
 
 if __name__ == '__main__':
