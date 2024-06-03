@@ -30,8 +30,11 @@ def image_to_text(img_filepath):
   return txt
 
 if __name__ == '__main__':
-  filepath = '87_43_b11df3f344d0af773aac81e410ee_fhd/frame_646.jpg'
-  print(f'{filepath=}')
-  txt = image_to_text(filepath)
-  print(txt)
+  import os
+  for root, dirs, files in os.walk('87_43_b11df3f344d0af773aac81e410ee_fhd'):
+    for file in files:
+      filepath = os.path.join(root, file)
+      print(f'{filepath=}')
+      txt = image_to_text(filepath)
+      print(txt)
 
