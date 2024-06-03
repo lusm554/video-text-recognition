@@ -53,7 +53,7 @@ def search_text_easyocr(image):
 
 def image_to_text(img_filepath):
   image = read_image(img_filepath)
-  image = preproc(image)
+  #image = preproc(image)
   #image = preproc2(image)
   '''
   from pathlib import Path
@@ -71,7 +71,9 @@ if __name__ == '__main__':
   print(t)
   exit()
   '''
-  for root, dirs, files in os.walk('87_43_b11df3f344d0af773aac81e410ee_fhd'):
+  import sys
+  path_to_dir = sys.argv[1]
+  for root, dirs, files in os.walk(path_to_dir):
     for file in files:
       filepath = os.path.join(root, file)
       print(f'{filepath=}')
