@@ -2,6 +2,7 @@ from PIL import Image
 import pytesseract
 import cv2
 import numpy as np
+import os
 
 def read_image(img_filepath):
   return cv2.imread(img_filepath)
@@ -17,6 +18,20 @@ def preproc(image):
   binary_image = cv2.medianBlur(binary_image, 3)
   return binary_image
 
+def preproc2(image):
+  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+  # Увеличение разрешения
+  gray = cv2.resize(gray, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+  # Увеличение контраста и яркости
+  alpha = 1.5  # Контраст (1.0-3.0)
+  beta = 0     # Яркость (0-100)
+  gray = cv2.convertScaleAbs(gray, alpha=alpha, beta=beta)
+  # Адаптивная бинаризация изображения
+  binary_image = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+  # Удаление шума
+  binary_image = cv2.medianBlur(binary_image, 3)
+  return binary_image
+
 def search_text(image):
   #image = Image.open(img_filepath)
   image = Image.fromarray(image)
@@ -25,12 +40,22 @@ def search_text(image):
 
 def image_to_text(img_filepath):
   image = read_image(img_filepath)
-  image = preproc(image)
+  #image = preproc(image)
+  image = preproc2(image)
+  print('proc_' + img_filepath)
+  from pathlib import Path
+  p = Path(img_filepath)
+  p = os.path.join(p.parent,'proc_' + p.name)
+  cv2.imwrite(p, image)
   txt = search_text(image)
   return txt
 
 if __name__ == '__main__':
-  import os
+  '''
+  t = image_to_text('frame_258.jpg')
+  print(t)
+  exit()
+  '''
   for root, dirs, files in os.walk('87_43_b11df3f344d0af773aac81e410ee_fhd'):
     for file in files:
       filepath = os.path.join(root, file)
