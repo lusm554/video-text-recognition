@@ -1,6 +1,7 @@
 import cv2
+import numpy as np
 
-def get_frames(path_to_video):
+def get_frames(path_to_video, num_frames=10):
   video = cv2.VideoCapture(path_to_video)
   if not video.isOpened():
     raise Error('Could not open video')
@@ -8,16 +9,15 @@ def get_frames(path_to_video):
   frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
   print(f'{fps=}')
   print(f'{frame_count=}')
-  frame_num = 0
-  while video.isOpened():
+  frame_idx = np.linspace(0, frame_count-1, num=num_frames, dtype=int)
+  for frame_offset in frame_idx:
+    video.set(cv2.CAP_PROP_POS_FRAMES, frame_offset)
     ret, frame = video.read()
-    if not ret:
-      break
-    if frame_num % 10 == 0:
-      frame_filepath = f'test_{frame_num}.jpg'
+    if ret:
+      frame_filepath = f'test_{frame_offset}.jpg'
       cv2.imwrite(frame_filepath, frame)
-    frame_num += 1
   video.release() 
+  cv2.destroyAllWindows()
 
 get_frames('videos/87_43_b11df3f344d0af773aac81e410ee_fhd.mp4')
 
