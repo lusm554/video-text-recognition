@@ -9,7 +9,14 @@ def get_frames(path_to_video, num_frames=10):
   frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
   print(f'{fps=}')
   print(f'{frame_count=}')
+  # Создает массив из num_frames чисел, равномерно распределенных в диапазоне от 0 до frame_count-1.
   frame_idx = np.linspace(0, frame_count-1, num=num_frames, dtype=int)
+	'''
+	Эта строка помогает равномерно распределить кадры по всей длине видео, чтобы получить репрезентативные кадры,
+	отражающие содержание всего видео.
+	Таким образом, вместо извлечения подряд идущих кадров в начале или конце видео,
+	получаются кадры из всех частей видео, что даёт более полное представление о его содержании.
+  '''
   for frame_offset in frame_idx:
     video.set(cv2.CAP_PROP_POS_FRAMES, frame_offset)
     ret, frame = video.read()
