@@ -41,14 +41,12 @@ def search_text_tesseract_ocr(image):
 def search_text_easyocr(image):
   import easyocr
   import matplotlib.pyplot as plt
-  gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   '''
-  plt.imshow(gray, cmap='gray')
-  plt.title('Gray Image')
+  plt.imshow(image, cmap='gray')
   plt.show()
   '''
   reader = easyocr.Reader(['ru', 'en'])
-  results = reader.readtext(gray)
+  results = reader.readtext(image)
   for (bbox, text, prob) in results:
     print(f'Text: {text}, Probability: {prob:.4f}')
   return ''
