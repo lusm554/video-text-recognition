@@ -1,10 +1,11 @@
 import cv2
 import numpy as np
-import os
+from pathlib import Path
 
-def video_to_frames(video_filepath, frames_dest_base_path, num_frames=10):
+def video_to_frames(video_filepath, frames_dest_dir, num_frames=10):
   print(f'{video_filepath=}')
-  print(f'{frames_dest_base_path=}')
+  print(f'{frames_dest_dir=}')
+  print(f'{num_frames=}')
   video = cv2.VideoCapture(video_filepath)
   if not video.isOpened():
     raise Error('Could not open video')
@@ -20,13 +21,15 @@ def video_to_frames(video_filepath, frames_dest_base_path, num_frames=10):
   Таким образом, вместо извлечения подряд идущих кадров в начале или конце видео,
   получаются кадры из всех частей видео, что даёт более полное представление о его содержании.
   '''
+  frames_dest_path_obj = Path(frames_dest_dir)
+  frames_dest_path_obj.mkdir(exist_ok=True) # create dir for frames if not exist
   for frame_offset in frame_idx:
     video.set(cv2.CAP_PROP_POS_FRAMES, frame_offset)
     ret, frame = video.read()
     if ret:
-      frame_filepath = os.path.join(frames_dest_base_path, f'frame_{frame_offset}.jpg')
+      frame_filepath = str(frames_dest_path_obj.joinpath(f'frame_{frame_offset}.jpg'))
       print(frame_filepath)
-      #cv2.imwrite(frame_filepath, frame)
+      cv2.imwrite(frame_filepath, frame)
   video.release() 
   cv2.destroyAllWindows()
 
