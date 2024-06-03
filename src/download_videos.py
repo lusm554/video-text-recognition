@@ -34,6 +34,7 @@ def main():
     print(f'{video_url_src=}')
     print(f'{video_filepath_dest=}')
     if os.path.exists(video_filepath_dest):
+      print(f'File exists {video_filepath_dest}')
       continue
     download_video(video_url_src, video_filepath_dest)
 
