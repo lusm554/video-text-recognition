@@ -11,7 +11,11 @@ def video_links_reader(filepath, isheader=True):
         row = line
       yield row
 
-if __name__ == '__main__':
+def download_video(src_url, dest_filepath):
+  import urllib.request
+  urllib.request.urlretrieve(src_url, dest_filepath)
+
+def main():
   import sys
   try:
     src_filepath = sys.argv[1]
@@ -21,7 +25,12 @@ if __name__ == '__main__':
   print(f'{src_filepath=}')
   print(f'{dest_dir=}')
   links_reader = video_links_reader(src_filepath)
-  for row in links_reader:
+  for n, row in enumerate(links_reader):
     print(row)
+    video_url = row['link']
+    download_video(video_url, 'test.mp4')
     break
+
+if __name__ == '__main__':
+  main()
 
