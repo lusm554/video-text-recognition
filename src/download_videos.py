@@ -16,7 +16,7 @@ def download_video(src_url, dest_filepath):
   urllib.request.urlretrieve(src_url, dest_filepath)
 
 def main():
-  import sys
+  import sys, os
   try:
     src_filepath = sys.argv[1]
     dest_dir = sys.argv[2]
@@ -26,10 +26,14 @@ def main():
   print(f'{dest_dir=}')
   links_reader = video_links_reader(src_filepath)
   for n, row in enumerate(links_reader):
-    print(row)
-    video_url = row['link']
-    download_video(video_url, 'test.mp4')
-    break
+    video_url_src = row['link']
+    _video_file = video_url_src.replace('https://cdn-st.rutubelist.ru/media', '').replace('/', '_').strip('_')
+    video_filepath_dest = os.path.join(dest_dir, _video_file)
+    print(f'{video_url_src=}')
+    print(f'{video_filepath_dest=}')
+    download_video(video_url_src, video_filepath_dest)
+    if n == 10:
+      break
 
 if __name__ == '__main__':
   main()
