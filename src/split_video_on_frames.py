@@ -34,7 +34,9 @@ def video_to_frames(video_filepath, frames_dest_dir, num_frames=10):
   cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-  video_filepath = 'videos/87_43_b11df3f344d0af773aac81e410ee_fhd.mp4'
+  #video_filepath = 'videos/87_43_b11df3f344d0af773aac81e410ee_fhd.mp4'
+  import sys
+  video_filepath = sys.argv[1]
   frames_dest_base_path = video_filepath.split('/')[-1].replace('.mp4', '')
   video_to_frames(video_filepath, frames_dest_base_path)
 
