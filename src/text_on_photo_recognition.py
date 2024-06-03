@@ -71,8 +71,8 @@ def image_to_text(img_filepath):
   cv2.imwrite(p, image)
   '''
   #txt = search_text_tesseract_ocr(image)
-  #txt = search_text_easyocr(image)
-  txt = search_text_paddle_ocr(image)
+  txt = search_text_easyocr(image)
+  #txt = search_text_paddle_ocr(image)
   return txt
 
 if __name__ == '__main__':
