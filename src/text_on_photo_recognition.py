@@ -52,7 +52,7 @@ def search_text_easyocr(image):
     top_left = tuple(map(int, bbox[0]))
     bottom_right = tuple(map(int, bbox[2]))
     image = cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
-    image = cv2.putText(image, text, top_left, cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2, cv2.LINE_AA, fontFace=cv2.FONT_HERSHEY_COMPLEX)
+    image = cv2.putText(image, text, top_left, cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
   return '', image
 
 def search_text_paddle_ocr(image):
