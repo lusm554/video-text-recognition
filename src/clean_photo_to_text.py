@@ -10,6 +10,7 @@ def search_text_easyocr(image):
     return None
   #for bbox, text, prob in results:
     #print(f'Text: {text}, Probability: {prob:.4f}')
+  print(' '.join(r[1] for r in results))
   bbox, text, prob = sorted(results, key=lambda x: x[-1])[-1]
   return bbox, text, prob
 
