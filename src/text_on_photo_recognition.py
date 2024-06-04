@@ -49,7 +49,7 @@ def search_text_easyocr(image):
   results = reader.readtext(image)
   if len(results) == 0:
     print('Not found.')
-    return ''
+    return '', None
   for bbox, text, prob in results:
     print(f'Text: {text}, Probability: {prob:.4f}')
 
@@ -81,8 +81,9 @@ def image_to_text(img_filepath):
   #image = preproc2(image)
   #txt = search_text_tesseract_ocr(image)
   txt, image = search_text_easyocr(image)
-  cv2.imwrite(p, image)
-  print(f'{p=}')
+  if image is not None:
+    cv2.imwrite(p, image)
+    print(f'{p=}')
   #txt = search_text_paddle_ocr(image)
   return txt
 
