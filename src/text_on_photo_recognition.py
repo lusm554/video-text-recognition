@@ -47,13 +47,20 @@ def search_text_easyocr(image):
   '''
   reader = easyocr.Reader(['ru', 'en'])
   results = reader.readtext(image)
+  if len(results) == 0:
+    print('Not found.')
+    return ''
   for bbox, text, prob in results:
     print(f'Text: {text}, Probability: {prob:.4f}')
-    top_left = tuple(map(int, bbox[0]))
-    bottom_right = tuple(map(int, bbox[2]))
-    image = cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
-    image = cv2.putText(image, text, top_left, cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
-  return '', image
+
+  bbox, text, prob = sorted(results, key=lambda x: x[-1])[-1]
+  top_left = tuple(map(int, bbox[0]))
+  bottom_right = tuple(map(int, bbox[2]))
+  image = cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
+  text_x_y = top_left[0], top_left[1] - 5
+  #image = cv2.putText(image, text, top_left, cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1, cv2.LINE_AA)
+  image = cv2.putText(image, text, text_x_y, cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1, cv2.LINE_AA)
+  return text, image
 
 def search_text_paddle_ocr(image):
   from paddleocr import PaddleOCR, draw_ocr
@@ -75,6 +82,7 @@ def image_to_text(img_filepath):
   #txt = search_text_tesseract_ocr(image)
   txt, image = search_text_easyocr(image)
   cv2.imwrite(p, image)
+  print(f'{p=}')
   #txt = search_text_paddle_ocr(image)
   return txt
 
