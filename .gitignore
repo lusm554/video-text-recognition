@@ -1,5 +1,6 @@
 *.tar.gz
 videos
+EasyOCR
 .venv
 *.swp
 .DS_Store
