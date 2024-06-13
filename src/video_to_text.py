@@ -9,20 +9,21 @@ Output:
 import cv2
 import split_video_on_frames as m_split_video_on_frames
 import image_to_text
+import post_proc_text
 
 def read_video_from_file(vid_filepath):
-  return cv2.VideoCapture(video_filepath)
+  return cv2.VideoCapture(vid_filepath)
 
 def split_video_on_frames(video, num_frames=10):
   return m_split_video_on_frames.video_to_frames(video, num_frames=num_frames)
 
 def frames_to_text(frames, batched_proc):
   if batched_proc:
-    frames_offset = [frame_offset for frame, frame_offset in frames]
+    frames_offset = [int(frame_offset) for frame, frame_offset in frames]
     frames = [frame for frame, frame_offset in frames]
     return dict(zip(frames_offset, image_to_text.list_images_to_text(frames)))
   result = {
-    frame_offset: image_to_text.image_to_text(frame)
+    int(frame_offset): image_to_text.image_to_text(frame)
     for frame, frame_offset in frames
   }
   return result
@@ -34,7 +35,13 @@ def video_to_text(video_filepath, batched_proc=True, save_frames=False):
     frames_dest_base_path = video_filepath.split('/')[-1].replace('.mp4', '')
     m_split_video_on_frames.save_frames(frames, frames_dest_base_path)
   frames_text = frames_to_text(frames, batched_proc)
-  return frames_text
+  tokens_text = post_proc_text.frames_text_to_tokens_text('\n'.join(frames_text.values()))
+  try:
+    model_handled_text = post_proc_text.proc_text_llama3_8b(tokens_text)
+  except Exception as error:
+    print(error)
+    return tokens_text
+  return model_handled_text
 
 if __name__ == '__main__':
   import sys, os
