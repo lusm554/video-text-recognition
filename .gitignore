@@ -5,3 +5,4 @@ EasyOCR
 *.swp
 .DS_Store
 yappy_hackaton_2024_400k.csv
+__pycache__
